@@ -33,8 +33,11 @@ class Equation {
       equation = equation + ` = `;
 
       if (this.rCoef != 0) {
-        console.log("aqui");
-        equation = equation + `${this.rCoef}x`;
+        if (this.rCoef == 1) {
+          equation += `x`;
+        } else {
+          equation += `${this.rCoef}x`;
+        }
       }
 
       if (this.rCons != 0) {
