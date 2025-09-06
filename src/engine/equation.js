@@ -1,3 +1,5 @@
+import Fraction from "fraction.js";
+
 class Equation {
   constructor(lCoef, lCons, rCoef, rCons) {
     this.lCoef = lCoef;
@@ -96,20 +98,34 @@ class Equation {
 
   resolve() {
     let minimumStepsForSolving = [];
-    //while (this.isEquationSolved() == false) {
-    if (this.lCoef != 1) {
-      minimumStepsForSolving.push(this.lCoef);
-      this.multSides(1 / this.lCoef);
-    } // guarantee x + a = bx + c
-    //}
 
-    if (this.rCoef != 0) console.log(minimumStepsForSolving);
-    console.log(this.getEquation());
+    // begin: ax + b = cx + d
+    if (this.rCoef != 0) {
+      minimumStepsForSolving.push([-this.rCoef, "coef"]);
+      this.addCoefSides(-this.rCoef);
+    }
+    // now in ax + b = d
+
+    if (this.lCoef != 1) {
+      minimumStepsForSolving.push([1 / this.lCoef, "coef"]);
+      this.multSides(1 / this.lCoef);
+    } // now in x + b = d
+
+    if (this.lCons != 0) {
+      minimumStepsForSolving.push([-this.lCons, "add"]);
+      this.addConsSides(-this.lCons);
+    }
+    // now in x = d
+
+    return {
+      minimumStepsForSolving,
+      finalEquation: this.getEquation(),
+    };
   }
 }
 
-let equationOne = new Equation(2, 0, 4, 4);
+let equationOne = new Equation(2, 0, 0, 4);
 
-equationOne.resolve();
+console.log(equationOne.resolve());
 
 export default Equation;
