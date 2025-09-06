@@ -51,6 +51,7 @@ class Equation {
 
       return equation;
     }
+    return "not an equation";
   }
 
   isEquationSolved() {
@@ -86,6 +87,4 @@ class Equation {
 
 let equationOne = new Equation(1, 0, 3, 4);
 
-console.log(equationOne.getEquation());
-equationOne.multSides(-1);
-console.log(equationOne.getEquation());
+module.exports = Equation;
