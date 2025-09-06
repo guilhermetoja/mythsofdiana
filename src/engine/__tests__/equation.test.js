@@ -49,7 +49,7 @@ describe("Equation.addSides", () => {
     `Equation(%i, %i, %i, %i).addSides(%i) should return "%s"`,
     (lCoef, lCons, rCoef, rCons, add, expected) => {
       const eq = new Equation(lCoef, lCons, rCoef, rCons);
-      eq.addSides(add);
+      eq.addConsSides(add);
       expect(eq.getEquation()).toBe(expected);
     }
   );

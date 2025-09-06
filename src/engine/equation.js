@@ -73,9 +73,14 @@ class Equation {
     return false;
   }
 
-  addSides(numberToAdd) {
+  addConsSides(numberToAdd) {
     this.lCons += numberToAdd;
     this.rCons += numberToAdd;
+  }
+
+  addCoefSides(numberToAdd) {
+    this.lCoef += numberToAdd;
+    this.rCoef += numberToAdd;
   }
 
   multSides(numberToMult) {
@@ -86,12 +91,21 @@ class Equation {
   }
 
   resolve() {
-    while (this.isEquationSolved() == false) {
-      console.log("oi");
-    }
+    let minimumStepsForSolving = [];
+    //while (this.isEquationSolved() == false) {
+    if (this.lCoef != 1) {
+      minimumStepsForSolving.push(this.lCoef);
+      this.multSides(1 / this.lCoef);
+    } // guarantee x + a = bx + c
+    //}
+
+    if (this.rCoef != 0) console.log(minimumStepsForSolving);
+    console.log(this.getEquation());
   }
 }
 
-let equationOne = new Equation(1, 0, 3, 4);
+let equationOne = new Equation(2, 0, 4, 4);
+
+equationOne.resolve();
 
 export default Equation;
