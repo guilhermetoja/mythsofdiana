@@ -77,3 +77,30 @@ describe("Equation.multSides", () => {
     }
   );
 });
+
+describe("Equation.isEquationSolved", () => {
+  test.each([
+    // lCoef, lCons, rCoef, rCons, expected
+    [1, 0, 0, 0, true], // canonical solved form: x = 0
+    [1, 0, 0, 5, true], // x = 5
+    [1, 0, 0, -3, true], // x = -3
+    [1, 0, 0, 100, true], // x = 100
+    [1, 1, 0, 0, false], // lCons not zero
+    [2, 0, 0, 0, false], // lCoef not 1
+    [1, 0, 1, 0, false], // rCoef not zero
+    [1, 0, 2, 0, false], // rCoef not zero
+    [1, 0, 0, 0, true], // x = 0
+    [1, 0, 0, 42, true], // x = 42
+    [0, 0, 0, 0, false], // lCoef not 1
+    [-1, 0, 0, 0, false], // lCoef not 1
+    [1, 0, 0, -42, true], // x = -42
+    [1, 5, 0, 0, false], // lCons not zero
+    [1, 0, 3, 4, false], // rCoef not zero
+  ])(
+    `Equation(%i, %i, %i, %i).isEquationSolved() should return %s`,
+    (lCoef, lCons, rCoef, rCons, expected) => {
+      const eq = new Equation(lCoef, lCons, rCoef, rCons);
+      expect(eq.isEquationSolved()).toBe(expected);
+    }
+  );
+});
