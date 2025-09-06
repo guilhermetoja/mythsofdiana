@@ -1,5 +1,3 @@
-import Fraction from "fraction.js";
-
 class Equation {
   constructor(lCoef, lCons, rCoef, rCons) {
     this.lCoef = lCoef;
@@ -123,9 +121,5 @@ class Equation {
     };
   }
 }
-
-let equationOne = new Equation(2, 0, 0, 4);
-
-console.log(equationOne.resolve());
 
 export default Equation;

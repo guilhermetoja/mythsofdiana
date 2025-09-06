@@ -15,7 +15,6 @@
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "fraction.js": "^5.3.4",
     "prompt-sync": "^4.2.0"
   },
   "jest": {
