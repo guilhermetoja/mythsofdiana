@@ -104,3 +104,26 @@ describe("Equation.isEquationSolved", () => {
     }
   );
 });
+
+describe("Equation.addCoefSides", () => {
+  test.each([
+    // lCoef, lCons, rCoef, rCons, add, expected
+    [1, 1, 1, 1, 2, "3x+1 = 3x+1"], // add positive
+    [1, 1, 1, 1, -2, "-x+1 = -x+1"], // add negative
+    [1, 1, 1, 1, 0, "x+1 = x+1"], // add zero
+    [2, -3, 1, -4, 5, "7x-3 = 6x-4"], // add positive, negatives in input
+    [2, -3, 1, -4, -1, "x-3 = -4"], // add negative, negatives in input
+    [0, 0, 0, 0, 3, "3x = 3x"], // all zero, add positive
+    [0, 0, 0, 0, -3, "-3x = -3x"], // all zero, add negative
+    [0, 0, 0, 0, 0, "not an equation"], // all zero, add zero
+    [1, -2, 0, -2, 2, "3x-2 = 2x-2"], // right side zeroed
+    [1, -2, 0, -2, -2, "-x-2 = -2x-2"], // right side more negative
+  ])(
+    `Equation(%i, %i, %i, %i).addCoefSides(%i) should return "%s"`,
+    (lCoef, lCons, rCoef, rCons, add, expected) => {
+      const eq = new Equation(lCoef, lCons, rCoef, rCons);
+      eq.addCoefSides(add);
+      expect(eq.getEquation()).toBe(expected);
+    }
+  );
+});
