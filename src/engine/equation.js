@@ -47,6 +47,10 @@ class Equation {
         } else if (this.rCons < 0) {
           equation = equation + `${this.rCons}`;
         }
+      } else {
+        if (this.rCoef == 0) {
+          equation += this.rCons;
+        }
       }
 
       return equation;
@@ -87,4 +91,4 @@ class Equation {
 
 let equationOne = new Equation(1, 0, 3, 4);
 
-module.exports = Equation;
+export default Equation;
