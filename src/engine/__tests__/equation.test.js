@@ -34,14 +34,22 @@ describe("Equation.getEquation", () => {
 
 describe("Equation.addSides", () => {
   test.each([
-    [1, 0, 0, 1, "x+2 = 3"],
-    [1, 1, 0, 1, "x+3 = 3"],
-    [1, -2, 0, -2, "x = 0"],
+    // lCoef, lCons, rCoef, rCons, add, expected
+    [1, 1, 1, 1, 2, "x+3 = x+3"], // add positive
+    [1, 1, 1, 1, -2, "x-1 = x-1"], // add negative
+    [1, 1, 1, 1, 0, "x+1 = x+1"], // add zero
+    [2, -3, 1, -4, 5, "2x+2 = 1x+1"], // add positive, negatives in input
+    [2, -3, 1, -4, -5, "2x-8 = 1x-9"], // add negative, negatives in input
+    [0, 0, 0, 0, 3, "3 = 3"], // all zero, add positive
+    [0, 0, 0, 0, -3, "-3 = -3"], // all zero, add negative
+    [0, 0, 0, 0, 0, "not an equation"], // all zero, add zero
+    [1, -2, 0, -2, 2, "x = 0"], // right side zeroed
+    [1, -2, 0, -2, -2, "x-4 = -4"], // right side more negative
   ])(
-    `Equation(%i, %i, %i, %i).addSides() should return "%s"`,
-    (lCoef, lCons, rCoef, rCons, expected) => {
+    `Equation(%i, %i, %i, %i).addSides(%i) should return "%s"`,
+    (lCoef, lCons, rCoef, rCons, add, expected) => {
       const eq = new Equation(lCoef, lCons, rCoef, rCons);
-      eq.addSides(2);
+      eq.addSides(add);
       expect(eq.getEquation()).toBe(expected);
     }
   );
