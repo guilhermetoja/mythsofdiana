@@ -11,16 +11,16 @@ describe("Equation.getEquation", () => {
     [1, -2, 3, 4, "x-2 = 3x+4"],
     [1, 2, -3, 4, "x+2 = -3x+4"],
     [1, 2, 3, -4, "x+2 = 3x-4"],
-    [-1, 2, 3, 4, "-1x+2 = 3x+4"],
+    [-1, 2, 3, 4, "-x+2 = 3x+4"],
     [1, -2, -3, 4, "x-2 = -3x+4"],
     [1, 2, -3, -4, "x+2 = -3x-4"],
-    [-1, -2, 3, 4, "-1x-2 = 3x+4"],
+    [-1, -2, 3, 4, "-x-2 = 3x+4"],
     [0, 0, 3, 4, "not an equation"],
     [1, 0, 0, 4, "x = 4"],
     [1, 2, 0, 0, "x+2 = 0"],
     [0, 2, 0, 4, "2 = 4"],
     [0, 0, 0, 0, "not an equation"],
-    [-1, -2, -3, -4, "-1x-2 = -3x-4"],
+    [-1, -2, -3, -4, "-x-2 = -3x-4"],
     [1, -2, 0, -4, "x-2 = -4"],
     [0, -2, 0, 4, "-2 = 4"],
   ])(
@@ -62,7 +62,7 @@ describe("Equation.multSides", () => {
     [1, 1, 1, 1, -2, "-2x-2 = -2x-2"], // multiply by negative
     [1, 1, 1, 1, 0, "not an equation"], // multiply by zero
     [2, -3, 1, -4, 3, "6x-9 = 3x-12"], // multiply by positive, negatives in input
-    [2, -3, 1, -4, -1, "-2x+3 = -1x+4"], // multiply by negative, negatives in input
+    [2, -3, 1, -4, -1, "-2x+3 = -x+4"], // multiply by negative, negatives in input
     [0, 0, 0, 0, 5, "not an equation"], // all zero, multiply by positive
     [0, 0, 0, 0, -3, "not an equation"], // all zero, multiply by negative
     [0, 0, 0, 0, 0, "not an equation"], // all zero, multiply by zero

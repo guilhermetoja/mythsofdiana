@@ -13,6 +13,8 @@ class Equation {
       if (this.lCoef != 0) {
         if (this.lCoef == 1) {
           equation = `x`;
+        } else if (this.lCoef == -1) {
+          equation = "-x";
         } else {
           equation = `${this.lCoef}x`;
         }
@@ -35,6 +37,8 @@ class Equation {
       if (this.rCoef != 0) {
         if (this.rCoef == 1) {
           equation += `x`;
+        } else if (this.rCoef == -1) {
+          equation += "-x";
         } else {
           equation += `${this.rCoef}x`;
         }
