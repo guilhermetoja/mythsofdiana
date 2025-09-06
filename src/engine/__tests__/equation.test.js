@@ -38,8 +38,8 @@ describe("Equation.addSides", () => {
     [1, 1, 1, 1, 2, "x+3 = x+3"], // add positive
     [1, 1, 1, 1, -2, "x-1 = x-1"], // add negative
     [1, 1, 1, 1, 0, "x+1 = x+1"], // add zero
-    [2, -3, 1, -4, 5, "2x+2 = 1x+1"], // add positive, negatives in input
-    [2, -3, 1, -4, -5, "2x-8 = 1x-9"], // add negative, negatives in input
+    [2, -3, 1, -4, 5, "2x+2 = x+1"], // add positive, negatives in input
+    [2, -3, 1, -4, -5, "2x-8 = x-9"], // add negative, negatives in input
     [0, 0, 0, 0, 3, "3 = 3"], // all zero, add positive
     [0, 0, 0, 0, -3, "-3 = -3"], // all zero, add negative
     [0, 0, 0, 0, 0, "not an equation"], // all zero, add zero
@@ -50,6 +50,29 @@ describe("Equation.addSides", () => {
     (lCoef, lCons, rCoef, rCons, add, expected) => {
       const eq = new Equation(lCoef, lCons, rCoef, rCons);
       eq.addSides(add);
+      expect(eq.getEquation()).toBe(expected);
+    }
+  );
+});
+
+describe("Equation.multSides", () => {
+  test.each([
+    // lCoef, lCons, rCoef, rCons, mult, expected
+    [1, 1, 1, 1, 2, "2x+2 = 2x+2"], // multiply by positive
+    [1, 1, 1, 1, -2, "-2x-2 = -2x-2"], // multiply by negative
+    [1, 1, 1, 1, 0, "not an equation"], // multiply by zero
+    [2, -3, 1, -4, 3, "6x-9 = 3x-12"], // multiply by positive, negatives in input
+    [2, -3, 1, -4, -1, "-2x+3 = -1x+4"], // multiply by negative, negatives in input
+    [0, 0, 0, 0, 5, "not an equation"], // all zero, multiply by positive
+    [0, 0, 0, 0, -3, "not an equation"], // all zero, multiply by negative
+    [0, 0, 0, 0, 0, "not an equation"], // all zero, multiply by zero
+    [1, -2, 0, -2, 2, "2x-4 = -4"], // right side zeroed
+    [1, -2, 0, -2, -2, "-2x+4 = 4"], // right side more negative
+  ])(
+    `Equation(%i, %i, %i, %i).multSides(%i) should return "%s"`,
+    (lCoef, lCons, rCoef, rCons, mult, expected) => {
+      const eq = new Equation(lCoef, lCons, rCoef, rCons);
+      eq.multSides(mult);
       expect(eq.getEquation()).toBe(expected);
     }
   );
