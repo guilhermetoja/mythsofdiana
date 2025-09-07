@@ -96,15 +96,24 @@ class Equation {
 
     return false;
   }
+  normalizeZeros() {
+    // JS as vezes retorna coisas como -0, por exemplo em -0 * 5 = -0, que no codigo e diferente de 0
+    if (Object.is(this.lCoef, -0)) this.lCoef = 0;
+    if (Object.is(this.lCons, -0)) this.lCons = 0;
+    if (Object.is(this.rCoef, -0)) this.rCoef = 0;
+    if (Object.is(this.rCons, -0)) this.rCons = 0;
+  }
 
   addConsSides(numberToAdd) {
     this.lCons += numberToAdd;
     this.rCons += numberToAdd;
+    this.normalizeZeros();
   }
 
   addCoefSides(numberToAdd) {
     this.lCoef += numberToAdd;
     this.rCoef += numberToAdd;
+    this.normalizeZeros();
   }
 
   multSides(numberToMult) {
@@ -112,6 +121,7 @@ class Equation {
     this.lCons *= numberToMult;
     this.rCoef *= numberToMult;
     this.rCons *= numberToMult;
+    this.normalizeZeros();
   }
 
   resolve() {
