@@ -1,3 +1,7 @@
+import Chance from "chance";
+
+const chance = new Chance();
+
 class Equation {
   constructor(lCoef, lCons, rCoef, rCons) {
     this.lCoef = lCoef;
@@ -7,62 +11,78 @@ class Equation {
   }
 
   getEquation() {
-    if (this.lCoef != 0 || this.lCons) {
-      let equation = "";
+    // Check if this is actually an equation (at least one side must have content)
+    const hasLeftContent = this.lCoef !== 0 || this.lCons !== 0;
+    const hasRightContent = this.rCoef !== 0 || this.rCons !== 0;
 
-      if (this.lCoef != 0) {
-        if (this.lCoef == 1) {
-          equation = `x`;
-        } else if (this.lCoef == -1) {
-          equation = "-x";
+    if (!hasLeftContent && !hasRightContent) {
+      return "not an equation";
+    }
+
+    let equation = "";
+
+    // Build left side
+    if (this.lCoef !== 0) {
+      if (this.lCoef === 1) {
+        equation = "x";
+      } else if (this.lCoef === -1) {
+        equation = "-x";
+      } else {
+        equation = `${this.lCoef}x`;
+      }
+    }
+
+    if (this.lCons !== 0) {
+      if (this.lCons > 0) {
+        if (this.lCoef !== 0) {
+          equation += `+${this.lCons}`;
         } else {
-          equation = `${this.lCoef}x`;
-        }
-      }
-
-      if (this.lCons != 0) {
-        if (this.lCons > 0) {
-          if (this.lCoef != 0) {
-            equation = equation + `+${this.lCons}`;
-          } else {
-            equation = equation + `${this.lCons}`;
-          }
-        } else if (this.lCons < 0) {
-          equation = equation + `${this.lCons}`;
-        }
-      }
-
-      equation = equation + ` = `;
-
-      if (this.rCoef != 0) {
-        if (this.rCoef == 1) {
-          equation += `x`;
-        } else if (this.rCoef == -1) {
-          equation += "-x";
-        } else {
-          equation += `${this.rCoef}x`;
-        }
-      }
-
-      if (this.rCons != 0) {
-        if (this.rCons > 0) {
-          if (this.rCoef != 0) {
-            equation = equation + `+${this.rCons}`;
-          } else {
-            equation = equation + `${this.rCons}`;
-          }
-        } else if (this.rCons < 0) {
-          equation = equation + `${this.rCons}`;
+          equation = `${this.lCons}`;
         }
       } else {
-        if (this.rCoef == 0) {
-          equation += this.rCons;
-        }
+        equation += `${this.lCons}`;
       }
-
-      return equation;
     }
-    return "not an equation";
+
+    // If left side is empty, make it "0"
+    if (equation === "") {
+      equation = "0";
+    }
+
+    equation += " = ";
+
+    // Build right side
+    let rightSide = "";
+
+    if (this.rCoef !== 0) {
+      if (this.rCoef === 1) {
+        rightSide = "x";
+      } else if (this.rCoef === -1) {
+        rightSide = "-x";
+      } else {
+        rightSide = `${this.rCoef}x`;
+      }
+    }
+
+    if (this.rCons !== 0) {
+      if (this.rCons > 0) {
+        if (this.rCoef !== 0) {
+          rightSide += `+${this.rCons}`;
+        } else {
+          rightSide = `${this.rCons}`;
+        }
+      } else {
+        rightSide += `${this.rCons}`;
+      }
+    }
+
+    // If right side is empty, make it "0"
+    if (rightSide === "") {
+      rightSide = "0";
+    }
+
+    equation += rightSide;
+    return equation;
   }
 
   isEquationSolved() {
@@ -96,30 +116,29 @@ class Equation {
 
   resolve() {
     let minimumStepsForSolving = [];
-
-    // begin: ax + b = cx + d
+    //begin ax + b = cx + d
     if (this.rCoef != 0) {
-      minimumStepsForSolving.push([-this.rCoef, "coef"]);
-      this.addCoefSides(-this.rCoef);
+      minimumStepsForSolving.push(`${-1 * this.rCoef}x`);
+      this.addCoefSides(-1 * this.rCoef);
     }
-    // now in ax + b = d
-
-    if (this.lCoef != 1) {
-      minimumStepsForSolving.push([1 / this.lCoef, "coef"]);
-      this.multSides(1 / this.lCoef);
-    } // now in x + b = d
+    // ax + b = d
 
     if (this.lCons != 0) {
-      minimumStepsForSolving.push([-this.lCons, "add"]);
-      this.addConsSides(-this.lCons);
+      minimumStepsForSolving.push(`${-1 * this.lCons}`);
+      this.addConsSides(-1 * this.lCons);
     }
-    // now in x = d
+    // ax = d
 
-    return {
-      minimumStepsForSolving,
-      finalEquation: this.getEquation(),
-    };
+    if (this.lCoef != 1) {
+      const multiplier = 1 / this.lCoef;
+      minimumStepsForSolving.push(`${1 / this.lCoef}x`);
+      this.multSides(multiplier);
+    }
+
+    return minimumStepsForSolving;
   }
+
+  static generateRandomEq() {}
 }
 
 export default Equation;
