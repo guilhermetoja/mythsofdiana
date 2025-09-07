@@ -127,3 +127,65 @@ describe("Equation.addCoefSides", () => {
     }
   );
 });
+
+describe("Equation.resolve()", () => {
+  it("should solve equation with rCoef on right side", () => {
+    const eq = new Equation(2, 3, 1, 5); // 2x + 3 = x + 5
+    const steps = eq.resolve();
+
+    expect(steps).toEqual(["-1x", "-3"]); // no "0.5x"
+    expect(eq.lCoef).toBe(1);
+    expect(eq.lCons).toBeCloseTo(0);
+    expect(eq.rCoef).toBe(0);
+    expect(eq.rCons).toBe(2);
+    expect(eq.isEquationSolved()).toBe(true);
+  });
+
+  it("should solve equation with no right coef", () => {
+    const eq = new Equation(3, 6, 0, 9); // 3x + 6 = 9
+    const steps = eq.resolve();
+
+    expect(steps).toEqual(["-6", "0.3333333333333333x"]);
+    expect(eq.lCoef).toBe(1);
+    expect(eq.lCons).toBeCloseTo(0);
+    expect(eq.rCoef).toBe(0);
+    expect(eq.rCons).toBe(1);
+    expect(eq.isEquationSolved()).toBe(true);
+  });
+
+  it("should handle negative coefficients", () => {
+    const eq = new Equation(-2, -4, 0, -10); // -2x - 4 = -10
+    const steps = eq.resolve();
+
+    expect(steps).toEqual(["4", "-0.5x"]);
+    expect(eq.lCoef).toBe(1);
+    expect(eq.lCons).toBeCloseTo(0); // handles -0 case
+    expect(eq.rCoef).toBe(0);
+    expect(eq.rCons).toBe(3);
+    expect(eq.isEquationSolved()).toBe(true);
+  });
+
+  it("should return empty steps if already solved", () => {
+    const eq = new Equation(1, 0, 0, 5); // x = 5
+    const steps = eq.resolve();
+
+    expect(steps).toEqual([]);
+    expect(eq.lCoef).toBe(1);
+    expect(eq.lCons).toBeCloseTo(0);
+    expect(eq.rCoef).toBe(0);
+    expect(eq.rCons).toBe(5);
+    expect(eq.isEquationSolved()).toBe(true);
+  });
+
+  it("should handle case where left coef requires division", () => {
+    const eq = new Equation(4, 0, 0, 8); // 4x = 8
+    const steps = eq.resolve();
+
+    expect(steps).toEqual(["0.25x"]);
+    expect(eq.lCoef).toBe(1);
+    expect(eq.lCons).toBeCloseTo(0);
+    expect(eq.rCoef).toBe(0);
+    expect(eq.rCons).toBe(2);
+    expect(eq.isEquationSolved()).toBe(true);
+  });
+});
